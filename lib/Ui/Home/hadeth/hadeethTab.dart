@@ -31,9 +31,7 @@ class _HadeethTabState extends State<HadeethTab> {
             ))),
             child: Text(
               'Hadeth',
-              style: TextStyle(
-                fontSize: 24,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
             )),
         Expanded(
           flex: 3,
@@ -44,7 +42,7 @@ class _HadeethTabState extends State<HadeethTab> {
                     return HadethTitleWidget(allAhadeth[index]);
                   },
                   separatorBuilder: (context, index) => Container(
-                        color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).dividerColor,
                         height: 2,
                         width: double.infinity,
                         margin: EdgeInsets.symmetric(horizontal: 64),

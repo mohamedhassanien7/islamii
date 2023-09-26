@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Home/hadeth/Hadeth.dart';
+import '../MyThemeData.dart';
 
 class HadethDetailsScreen extends StatelessWidget {
   static const String routeName = 'hadeth';
@@ -9,9 +10,11 @@ class HadethDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)?.settings.arguments as Hadeth;
     return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/images/main_background.png'),
+                image: AssetImage(MyThemeData.isDarkEnabled
+                    ? 'assets/images/main_background_dark.png'
+                    : 'assets/images/main_background.png'),
                 fit: BoxFit.cover)),
         child: Scaffold(
             appBar: AppBar(
@@ -24,12 +27,9 @@ class HadethDetailsScreen extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 40, horizontal: 24),
                     child: SingleChildScrollView(
                       child: Text(
-                        textAlign: TextAlign.center,
-                        args.content,
-                        style: TextStyle(
-                          fontSize: 23,
-                        ),
-                      ),
+                          textAlign: TextAlign.center,
+                          args.content,
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ),
                 ),
