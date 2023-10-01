@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:islamii/providers/SettingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class LanguageButtomSheet extends StatefulWidget {
   @override
@@ -8,6 +10,8 @@ class LanguageButtomSheet extends StatefulWidget {
 class _LanguageButtomSheetState extends State<LanguageButtomSheet> {
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
+
     return Container(
       padding: EdgeInsets.all(12),
       width: double.infinity,
@@ -27,8 +31,22 @@ class _LanguageButtomSheetState extends State<LanguageButtomSheet> {
           // Text('Dark',
           //   style: TextStyle(fontSize: 24),
           // ),
-          getSelectedItem('English'),
-          getUnSelectedItem('العربية')
+          InkWell(
+              onTap: () {
+                settingsProvider.changeLocale("en");
+                Navigator.of(context).pop();
+              },
+              child: settingsProvider.currentLocale == "en"
+                  ? getSelectedItem('English')
+                  : getUnSelectedItem("English")),
+          InkWell(
+              onTap: () {
+                settingsProvider.changeLocale("ar");
+                Navigator.of(context).pop();
+              },
+              child: settingsProvider.currentLocale == "ar"
+                  ? getUnSelectedItem('العربية')
+                  : getUnSelectedItem("العربية")),
         ],
       ),
     );
@@ -54,9 +72,13 @@ class _LanguageButtomSheetState extends State<LanguageButtomSheet> {
   }
 
   Widget getUnSelectedItem(String text) {
-    return Text(
-      text,
-      style: TextStyle(fontSize: 24),
+    return Row(
+      children: [
+        Text(
+          text,
+          style: TextStyle(fontSize: 24),
+        ),
+      ],
     );
   }
 }

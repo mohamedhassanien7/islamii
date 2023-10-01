@@ -5,18 +5,26 @@ import 'package:islamii/Ui/HadethDetails/HadethDetailsScreen.dart';
 import 'package:islamii/Ui/Home/HomeScreen.dart';
 import 'package:islamii/Ui/MyThemeData.dart';
 import 'package:islamii/Ui/chapter_details/ChapterDetailsScreen.dart';
+import 'package:islamii/providers/SettingsProvider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(Myapp());
+  runApp(ChangeNotifierProvider(
+      create: (buildCotext) => SettingsProvider(), child: Myapp()));
 }
 
 class Myapp extends StatelessWidget {
+  late SettingsProvider settingsProvider;
+
   @override
   Widget build(BuildContext context) {
+    settingsProvider = Provider.of<SettingsProvider>(context);
+    getValueFromShared();
     return MaterialApp(
       theme: MyThemeData.lightTheme,
       darkTheme: MyThemeData.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: settingsProvider.currentTheme,
       routes: {
         HomeScreen.routeName: (_) => HomeScreen(),
         ChapterDetailsScreen.routeName: (_) => ChapterDetailsScreen(),
@@ -33,7 +41,18 @@ class Myapp extends StatelessWidget {
         Locale('en'), // English
         Locale('ar'), // arabic
       ],
-      locale: Locale('en'),
+      locale: Locale(settingsProvider.currentLocale),
     );
+  }
+
+  void getValueFromShared() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    settingsProvider.changeLocale(prefs.getString('lang') ?? 'ar');
+
+    if (prefs.getString('theme') == 'light') {
+      settingsProvider.changeTheme(ThemeMode.light);
+    } else if (prefs.getString('theme') == 'dark') {
+      settingsProvider.changeTheme(ThemeMode.dark);
+    }
   }
 }

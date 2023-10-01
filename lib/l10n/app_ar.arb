@@ -6,5 +6,9 @@
 "radio":"الاإذاعة",
 "hadeth_number":"رقم الحديث",
 "chapter_name":"اسم السورة",
-"settings" : "الاعدادات"
+"settings" : "الاعدادات",
+"theme" : "السمه",
+"language":"اللغة",
+"light":"نهارى",
+"dark":"ليلى"
 }

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:islamii/providers/SettingsProvider.dart';
+import 'package:provider/provider.dart';
 
 class ThemeButtomSheet extends StatefulWidget {
   @override
@@ -8,6 +11,7 @@ class ThemeButtomSheet extends StatefulWidget {
 class _ThemeButtomSheetState extends State<ThemeButtomSheet> {
   @override
   Widget build(BuildContext context) {
+    var settingsProvider = Provider.of<SettingsProvider>(context);
     return Container(
       padding: EdgeInsets.all(12),
       width: double.infinity,
@@ -27,8 +31,22 @@ class _ThemeButtomSheetState extends State<ThemeButtomSheet> {
           // Text('Dark',
           //   style: TextStyle(fontSize: 24),
           // ),
-          getSelectedItem('Light'),
-          getUnSelectedItem('Dark')
+          InkWell(
+            onTap: () {
+              settingsProvider.changeTheme(ThemeMode.light);
+            },
+            child: settingsProvider.isDarkEnabled()
+                ? getUnSelectedItem(AppLocalizations.of(context)!.light)
+                : getSelectedItem(AppLocalizations.of(context)!.light),
+          ),
+          InkWell(
+            onTap: () {
+              settingsProvider.changeTheme(ThemeMode.dark);
+            },
+            child: settingsProvider.isDarkEnabled()
+                ? getUnSelectedItem(AppLocalizations.of(context)!.dark)
+                : getUnSelectedItem(AppLocalizations.of(context)!.dark),
+          )
         ],
       ),
     );
@@ -49,9 +67,13 @@ class _ThemeButtomSheetState extends State<ThemeButtomSheet> {
   }
 
   Widget getUnSelectedItem(String text) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.titleMedium,
+    return Row(
+      children: [
+        Text(
+          text,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+      ],
     );
   }
 }
